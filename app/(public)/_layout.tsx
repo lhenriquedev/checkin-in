@@ -1,10 +1,10 @@
-import { Stack } from "expo-router";
+import { Stack } from 'expo-router'
 
 export default function PublicLayout() {
   return (
-    <Stack>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="sign-in" />
       <Stack.Screen name="sign-up" />
     </Stack>
-  );
+  )
 }

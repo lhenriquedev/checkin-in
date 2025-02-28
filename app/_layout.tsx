@@ -1,72 +1,74 @@
-import "../global.css";
+import { Slot, useRouter, useSegments } from 'expo-router'
+import * as SplashScreen from 'expo-splash-screen'
+import { useEffect } from 'react'
 
-import { Slot, useRouter, useSegments } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
+import 'react-native-reanimated'
 
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import { ClerkLoaded, ClerkProvider, useAuth } from "@clerk/clerk-expo";
-import { tokenCache } from "@/lib/cache";
+import { tokenCache } from '@/lib/cache'
 
+import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo'
 
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query-client";
-import * as Sentry from '@sentry/react-native';
+import { queryClient } from '@/lib/query-client'
+
+import * as Sentry from '@sentry/react-native'
+import { QueryClientProvider } from '@tanstack/react-query'
 
 Sentry.init({
   dsn: 'https://db6a95c2a02c3220901552ae478d8bf1@o4508761356763136.ingest.us.sentry.io/4508761362071552',
 
   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
   // spotlight: __DEV__,
-});
+})
 
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync()
 
 const InitialLayout = () => {
-  const { isLoaded, isSignedIn } = useAuth();
-  const segments = useSegments();
-  const router = useRouter();
+  const { isLoaded, isSignedIn } = useAuth()
+  const segments = useSegments()
+  const router = useRouter()
 
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded) return
 
-    const inTabsGroup = segments[0] === "(auth)";
+    const inTabsGroup = segments[0] === '(auth)'
 
-    console.log("User changed: ", isSignedIn);
+    console.log('User changed: ', isSignedIn)
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace("/(auth)/home");
+      router.replace('/(auth)/home')
     } else if (!isSignedIn) {
-      router.replace("/(public)/sign-in");
+      router.replace('/(public)/sign-in')
     }
-  }, [isSignedIn]);
+  }, [isSignedIn])
 
-  return <Slot />;
-};
-
+  return <Slot />
+}
 
 if (__DEV__) {
-  require('@/lib/reactotron');
+  require('@/lib/reactotron')
 }
 
 const RootLayoutNav = () => {
   if (!publishableKey) {
-    throw new Error("Add EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env");
+    throw new Error('Add EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env')
   }
 
   return (
-    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-      <ClerkLoaded>
-        <QueryClientProvider client={queryClient}>
-          <InitialLayout />
-        </QueryClientProvider>
-      </ClerkLoaded>
-    </ClerkProvider>
-  );
-};
+    <SafeAreaProvider>
+      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+        <ClerkLoaded>
+          <QueryClientProvider client={queryClient}>
+            <InitialLayout />
+          </QueryClientProvider>
+        </ClerkLoaded>
+      </ClerkProvider>
+    </SafeAreaProvider>
+  )
+}
 
-export default RootLayoutNav;
+export default RootLayoutNav
