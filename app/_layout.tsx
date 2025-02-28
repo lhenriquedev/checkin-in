@@ -1,5 +1,4 @@
 import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo'
-import * as Sentry from '@sentry/react-native'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router'
 import { useEffect } from 'react'
@@ -9,13 +8,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { tokenCache } from '@/lib/cache'
 import { queryClient } from '@/lib/query-client'
-
-Sentry.init({
-  dsn: 'https://db6a95c2a02c3220901552ae478d8bf1@o4508761356763136.ingest.us.sentry.io/4508761362071552',
-
-  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
-  // spotlight: __DEV__,
-})
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
 
