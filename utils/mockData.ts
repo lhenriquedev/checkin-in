@@ -25,6 +25,7 @@ export function getMockClassesForDate(date: Date): Class[] {
       time: '07:00',
       enrolled: 15,
       capacity: 20,
+      isCheckedIn: true,
     },
     {
       id: `${dateStr}-advanced`,
@@ -33,6 +34,7 @@ export function getMockClassesForDate(date: Date): Class[] {
       time: '18:30',
       enrolled: 12,
       capacity: 15,
+      isCheckedIn: false,
     },
   ]
 
@@ -47,6 +49,7 @@ export function getMockClassesForDate(date: Date): Class[] {
         time: '10:00',
         enrolled: 8,
         capacity: 12,
+        isCheckedIn: false,
       },
       {
         id: `${dateStr}-competition`,
@@ -55,6 +58,7 @@ export function getMockClassesForDate(date: Date): Class[] {
         time: '19:30',
         enrolled: 20,
         capacity: 25,
+        isCheckedIn: false,
       },
     ],
     // Wednesday
@@ -66,6 +70,7 @@ export function getMockClassesForDate(date: Date): Class[] {
         time: '17:00',
         enrolled: 22,
         capacity: 30,
+        isCheckedIn: false,
       },
     ],
     // Friday
@@ -77,6 +82,7 @@ export function getMockClassesForDate(date: Date): Class[] {
         time: '19:00',
         enrolled: 28,
         capacity: 30,
+        isCheckedIn: false,
       },
     ],
     // Saturday
@@ -88,6 +94,7 @@ export function getMockClassesForDate(date: Date): Class[] {
         time: '09:00',
         enrolled: 14,
         capacity: 15,
+        isCheckedIn: false,
       },
       {
         id: `${dateStr}-women`,
@@ -96,6 +103,7 @@ export function getMockClassesForDate(date: Date): Class[] {
         time: '11:00',
         enrolled: 18,
         capacity: 25,
+        isCheckedIn: false,
       },
     ],
   }

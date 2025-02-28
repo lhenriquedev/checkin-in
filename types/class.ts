@@ -6,4 +6,5 @@ export interface Class {
   enrolled: number
   capacity: number
   imageUrl?: string
+  isCheckedIn: boolean
 }

@@ -1,19 +1,14 @@
-import { Slot, useRouter, useSegments } from 'expo-router'
-import * as SplashScreen from 'expo-splash-screen'
+import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo'
+import * as Sentry from '@sentry/react-native'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router'
 import { useEffect } from 'react'
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-reanimated'
-
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { tokenCache } from '@/lib/cache'
-
-import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo'
-
 import { queryClient } from '@/lib/query-client'
-
-import * as Sentry from '@sentry/react-native'
-import { QueryClientProvider } from '@tanstack/react-query'
 
 Sentry.init({
   dsn: 'https://db6a95c2a02c3220901552ae478d8bf1@o4508761356763136.ingest.us.sentry.io/4508761362071552',
@@ -60,13 +55,15 @@ const RootLayoutNav = () => {
 
   return (
     <SafeAreaProvider>
-      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-        <ClerkLoaded>
-          <QueryClientProvider client={queryClient}>
-            <InitialLayout />
-          </QueryClientProvider>
-        </ClerkLoaded>
-      </ClerkProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+          <ClerkLoaded>
+            <QueryClientProvider client={queryClient}>
+              <InitialLayout />
+            </QueryClientProvider>
+          </ClerkLoaded>
+        </ClerkProvider>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   )
 }

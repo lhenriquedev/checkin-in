@@ -8,4 +8,5 @@ export interface Class {
   date: string
   capacity: number
   enrolled: number
+  isCheckedIn: boolean
 }
