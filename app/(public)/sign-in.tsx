@@ -16,6 +16,8 @@ import {
 import { toast } from 'sonner-native'
 import * as z from 'zod'
 
+import styles from './sign-in.styles'
+
 import GoogleLogo from '@/assets/images/google-logo.png'
 import Logo from '@/assets/images/logo.png'
 
@@ -87,52 +89,45 @@ export default function Page() {
     if (!isLoaded) return
 
     try {
-      // Iniciar o processo de login com o Google
-      const signInAttempt = await signIn.create({
+      // Iniciar o processo de login com o Google usando Clerk
+      await signIn.create({
         strategy: 'oauth_google',
         redirectUrl:
           Platform.OS === 'web' ? window.location.origin : 'your-app-scheme://',
       })
 
-      // Corrigir a verificação de status para evitar erro de tipagem
-      if (signInAttempt?.status === 'needs_redirect') {
-        // Implementação específica para abrir o URL de autenticação
-        console.log('Redirecionando para autenticação Google...')
-      }
+      // For a complete implementation, you would need to handle the redirect
+      // flow using Linking API on mobile platforms or window.location on web
+      console.log('Iniciando autenticação Google...')
+
+      // Note: The complete implementation would include handling the redirect
+      // and callback from Google OAuth, but that's outside the scope of this edit
     } catch (err) {
       console.error('Erro ao fazer login com Google:', err)
     }
   }, [isLoaded])
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1"
+        style={styles.keyboardAvoidingView}
       >
-        <View className="flex-1 justify-center px-8">
-          <View className="mb-10 items-center">
-            <Image
-              source={Logo}
-              className="w-32 h-32 mb-6"
-              resizeMode="contain"
-            />
-            <Text className="text-3xl font-bold text-black mb-2">
-              Bem-vindo
-            </Text>
-            <Text className="text-gray-600 text-center">
-              Faça login para continuar
-            </Text>
+        <View style={styles.contentContainer}>
+          <View style={styles.logoContainer}>
+            <Image source={Logo} style={styles.logo} resizeMode="contain" />
+            <Text style={styles.title}>Bem-vindo</Text>
+            <Text style={styles.subtitle}>Faça login para continuar</Text>
           </View>
 
-          <View className="flex flex-col gap-4">
-            <View className="rounded-lg px-4 py-4 border border-gray-200">
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
               <Controller
                 control={control}
                 name="email"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    className="text-black"
+                    style={styles.input}
                     autoCapitalize="none"
                     value={value}
                     placeholder="Email"
@@ -145,18 +140,16 @@ export default function Page() {
               />
             </View>
             {errors.email && (
-              <Text className="text-red-500 text-sm ml-1">
-                {errors.email.message}
-              </Text>
+              <Text style={styles.errorText}>{errors.email.message}</Text>
             )}
 
-            <View className="rounded-lg px-4 py-4 border border-gray-200">
+            <View style={styles.inputContainer}>
               <Controller
                 control={control}
                 name="password"
                 render={({ field: { onChange, onBlur, value } }) => (
                   <TextInput
-                    className="text-black"
+                    style={styles.input}
                     value={value}
                     placeholder="Senha"
                     placeholderTextColor="#9CA3AF"
@@ -168,46 +161,38 @@ export default function Page() {
               />
             </View>
             {errors.password && (
-              <Text className="text-red-500 text-sm ml-1">
-                {errors.password.message}
-              </Text>
+              <Text style={styles.errorText}>{errors.password.message}</Text>
             )}
 
             <TouchableOpacity
-              className={`rounded-lg py-4 ${isLoading ? 'bg-gray-600' : 'bg-black'}`}
+              style={[styles.button, isLoading && styles.buttonDisabled]}
               onPress={handleSubmit(onSignInPress)}
               disabled={isLoading}
             >
-              <Text className="text-white font-semibold text-center">
+              <Text style={styles.buttonText}>
                 {isLoading ? 'Entrando...' : 'Entrar'}
               </Text>
             </TouchableOpacity>
 
-            <View className="flex-row items-center my-4">
-              <View className="flex-1 h-px bg-gray-300" />
-              <Text className="mx-4 text-gray-500">ou</Text>
-              <View className="flex-1 h-px bg-gray-300" />
+            <View style={styles.dividerContainer}>
+              <View style={styles.divider} />
+              <Text style={styles.dividerText}>ou</Text>
+              <View style={styles.divider} />
             </View>
 
             <TouchableOpacity
-              className="flex-row justify-center items-center bg-white border border-gray-300 rounded-lg py-4"
+              style={styles.googleButton}
               onPress={onGoogleSignInPress}
             >
-              <Image
-                source={GoogleLogo}
-                style={{ width: 24, height: 24 }}
-                className="mr-2"
-              />
-              <Text className="text-black font-semibold">
-                Continuar com Google
-              </Text>
+              <Image source={GoogleLogo} style={styles.googleLogo} />
+              <Text style={styles.googleButtonText}>Continuar com Google</Text>
             </TouchableOpacity>
           </View>
 
-          <View className="flex-row justify-center mt-10">
-            <Text className="text-gray-600">Não tem uma conta? </Text>
+          <View style={styles.signupContainer}>
+            <Text style={styles.signupText}>Não tem uma conta? </Text>
             <Link href="/sign-up">
-              <Text className="text-black font-semibold">Cadastre-se</Text>
+              <Text style={styles.signupLink}>Cadastre-se</Text>
             </Link>
           </View>
         </View>
