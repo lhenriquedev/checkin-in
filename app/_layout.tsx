@@ -1,3 +1,5 @@
+import 'expo-dev-client'
+
 import { ClerkLoaded, ClerkProvider, useAuth } from '@clerk/clerk-expo'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router'
