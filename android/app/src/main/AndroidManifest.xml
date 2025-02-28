@@ -26,7 +26,7 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="myapp"/>
         <data android:scheme="com.kazama_24.checkin2"/>
-        <data android:scheme="exp+checkin2"/>
+        <data android:scheme="exp+ct-kings"/>
       </intent-filter>
     </activity>
   </application>
