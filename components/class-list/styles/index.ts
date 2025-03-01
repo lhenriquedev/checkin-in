@@ -3,8 +3,11 @@ import { StyleSheet } from 'react-native'
 export const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
+    flex: 1,
   },
-  listContent: {},
+  listContent: {
+    // flexGrow: 1,
+  },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
