@@ -1,13 +1,10 @@
 import BottomSheet, {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
   BottomSheetView,
   BottomSheetProps as GorhomBottomSheetProps,
 } from '@gorhom/bottom-sheet'
 import {
   forwardRef,
   ForwardRefRenderFunction,
-  useCallback,
   useImperativeHandle,
   useRef,
 } from 'react'
@@ -39,18 +36,6 @@ const BottomSheetComponent: ForwardRefRenderFunction<
     },
   }))
 
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={0}
-        appearsOnIndex={1}
-        enableTouchThrough={true}
-      />
-    ),
-    [],
-  )
-
   return (
     <BottomSheet
       ref={bottomSheetRef}
@@ -61,7 +46,6 @@ const BottomSheetComponent: ForwardRefRenderFunction<
       enableOverDrag={false}
       handleIndicatorStyle={styles.indicator}
       backgroundStyle={styles.backgroundStyle}
-      backdropComponent={renderBackdrop}
       android_keyboardInputMode="adjustResize"
       style={styles.bottomSheet}
       {...props}

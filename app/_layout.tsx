@@ -4,7 +4,6 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import 'react-native-reanimated'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import { queryClient } from '@/lib/query-client'
