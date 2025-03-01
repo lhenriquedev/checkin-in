@@ -39,11 +39,9 @@ const BottomSheetComponent: ForwardRefRenderFunction<
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      snapPoints={props.snapPoints}
       index={props.index}
-      enablePanDownToClose={false}
-      enableDynamicSizing={false}
-      enableOverDrag={false}
+      enablePanDownToClose={true}
+      enableDynamicSizing={true}
       handleIndicatorStyle={styles.indicator}
       backgroundStyle={styles.backgroundStyle}
       android_keyboardInputMode="adjustResize"

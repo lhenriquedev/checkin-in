@@ -96,11 +96,7 @@ export default function HomeScreen() {
         </ClassList.Root>
       </View>
 
-      <CustomBottomSheet
-        ref={bottomSheetModalRef}
-        index={0}
-        snapPoints={[0.01, 509]}
-      >
+      <CustomBottomSheet ref={bottomSheetModalRef} index={-1}>
         {/* Cabeçalho com informações principais */}
         <View style={styles.headerContainer}>
           <View style={styles.headerTextContainer}>

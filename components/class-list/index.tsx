@@ -74,7 +74,7 @@ ClassListRoot.Empty = function EmptyClassList() {
 
 ClassListRoot.Loading = function LoadingClassList() {
   return (
-    <View style={styles.container}>
+    <View>
       <ClassSkeleton />
       <ClassSkeleton />
       <ClassSkeleton />
