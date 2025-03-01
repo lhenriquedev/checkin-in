@@ -1,4 +1,4 @@
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
+import { BottomSheetFlashList } from '@gorhom/bottom-sheet'
 import { addDays, format } from 'date-fns'
 import React, { useEffect, useRef, useState } from 'react'
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
@@ -96,126 +96,163 @@ export default function HomeScreen() {
         </ClassList.Root>
       </View>
 
-      <CustomBottomSheet ref={bottomSheetModalRef} index={0}>
-        <BottomSheetFlatList
+      <CustomBottomSheet
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={[0.01, 509]}
+      >
+        {/* Cabeçalho com informações principais */}
+        <View style={styles.headerContainer}>
+          <View style={styles.headerTextContainer}>
+            <Text style={styles.classTitle}>Aula de Yoga</Text>
+            <View style={styles.instructorContainer}>
+              <Image
+                source={{ uri: 'https://example.com/instructor.jpg' }}
+                style={styles.instructorAvatar}
+              />
+              <Text style={styles.instructorName}>Prof. Amanda Silva</Text>
+            </View>
+          </View>
+
+          <View style={styles.statusBadge}>
+            <Text style={styles.statusText}>Em andamento</Text>
+          </View>
+        </View>
+
+        {/* Cards com informações da aula */}
+        <View style={styles.infoCardsContainer}>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoCardLabel}>Horário</Text>
+            <Text style={styles.infoCardValue}>16:00 - 17:30</Text>
+          </View>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoCardLabel}>Sala</Text>
+            <Text style={styles.infoCardValue}>Studio 3</Text>
+          </View>
+          <View style={styles.infoCard}>
+            <Text style={styles.infoCardLabel}>Participantes</Text>
+            <Text style={styles.infoCardValue}>12/20</Text>
+          </View>
+        </View>
+
+        <BottomSheetFlashList
           data={[
             {
               id: '1',
               name: 'Ana Silva',
-              avatar: 'https://example.com/student1.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:55',
             },
             {
               id: '2',
               name: 'Carlos Oliveira',
-              avatar: 'https://example.com/student2.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:50',
             },
             {
               id: '3',
               name: 'Mariana Santos',
-              avatar: 'https://example.com/student3.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:48',
             },
             {
               id: '4',
               name: 'Paulo Mendes',
-              avatar: 'https://example.com/student4.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:45',
             },
             {
               id: '5',
               name: 'Ana Silva',
-              avatar: 'https://example.com/student1.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:55',
             },
             {
               id: '6',
               name: 'Carlos Oliveira',
-              avatar: 'https://example.com/student2.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:50',
             },
             {
               id: '7',
               name: 'Mariana Santos',
-              avatar: 'https://example.com/student3.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:48',
             },
             {
               id: '8',
               name: 'Paulo Mendes',
-              avatar: 'https://example.com/student4.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:45',
             },
 
             {
               id: '9',
               name: 'Ana Silva',
-              avatar: 'https://example.com/student1.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:55',
             },
             {
               id: '10',
               name: 'Carlos Oliveira',
-              avatar: 'https://example.com/student2.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:50',
             },
             {
               id: '11',
               name: 'Mariana Santos',
-              avatar: 'https://example.com/student3.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:48',
             },
             {
               id: '12',
               name: 'Paulo Mendes',
-              avatar: 'https://example.com/student4.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:45',
             },
             {
               id: '13',
               name: 'Ana Silva',
-              avatar: 'https://example.com/student1.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:55',
             },
             {
               id: '14',
               name: 'Carlos Oliveira',
-              avatar: 'https://example.com/student2.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:50',
             },
             {
               id: '15',
               name: 'Mariana Santos',
-              avatar: 'https://example.com/student3.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:48',
             },
             {
               id: '12',
               name: 'Paulo Mendes',
-              avatar: 'https://example.com/student4.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:45',
             },
             {
               id: '14',
               name: 'Carlos Oliveira',
-              avatar: 'https://example.com/student2.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:50',
             },
             {
               id: '15',
               name: 'Mariana Santos',
-              avatar: 'https://example.com/student3.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:48',
             },
             {
               id: '12',
               name: 'Henrique',
-              avatar: 'https://example.com/student4.jpg',
+              avatar: 'https://placehold.co/32x32',
               time: '15:45',
             },
           ]}
-          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.studentCard}>
               <Image
@@ -229,73 +266,7 @@ export default function HomeScreen() {
               </View>
             </View>
           )}
-          ListHeaderComponent={() => (
-            <>
-              {/* Cabeçalho com informações principais */}
-              <View style={styles.headerContainer}>
-                <View style={styles.headerTextContainer}>
-                  <Text style={styles.classTitle}>Aula de Yoga</Text>
-                  <View style={styles.instructorContainer}>
-                    <Image
-                      source={{ uri: 'https://example.com/instructor.jpg' }}
-                      style={styles.instructorAvatar}
-                    />
-                    <Text style={styles.instructorName}>
-                      Prof. Amanda Silva
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={styles.statusBadge}>
-                  <Text style={styles.statusText}>Em andamento</Text>
-                </View>
-              </View>
-
-              {/* Cards com informações da aula */}
-              <View style={styles.infoCardsContainer}>
-                <View style={styles.infoCard}>
-                  <Text style={styles.infoCardLabel}>Horário</Text>
-                  <Text style={styles.infoCardValue}>16:00 - 17:30</Text>
-                </View>
-                <View style={styles.infoCard}>
-                  <Text style={styles.infoCardLabel}>Sala</Text>
-                  <Text style={styles.infoCardValue}>Studio 3</Text>
-                </View>
-                <View style={styles.infoCard}>
-                  <Text style={styles.infoCardLabel}>Participantes</Text>
-                  <Text style={styles.infoCardValue}>12/20</Text>
-                </View>
-              </View>
-
-              {/* Descrição da aula */}
-              <View style={styles.descriptionContainer}>
-                <Text style={styles.sectionTitle}>Sobre a aula</Text>
-                <Text style={styles.descriptionText}>
-                  Aula focada em desenvolver flexibilidade e força através de
-                  posturas tradicionais do yoga. Ideal para todos os níveis, com
-                  adaptações disponíveis para iniciantes.
-                </Text>
-              </View>
-
-              {/* Título da lista de participantes */}
-              <View style={styles.studentsSection}>
-                <View style={styles.sectionTitleRow}>
-                  <Text style={styles.sectionTitle}>Participantes</Text>
-                </View>
-              </View>
-            </>
-          )}
-          contentContainerStyle={styles.flatListContent}
-          showsVerticalScrollIndicator={true}
-          bounces={false}
-          initialNumToRender={20}
-          scrollEnabled={true}
-          overScrollMode="never"
-          removeClippedSubviews={false}
-          windowSize={21}
-          maxToRenderPerBatch={10}
-          updateCellsBatchingPeriod={50}
-          onEndReachedThreshold={0.5}
+          estimatedItemSize={100}
         />
       </CustomBottomSheet>
     </SafeAreaView>
@@ -343,6 +314,7 @@ const styles = StyleSheet.create({
     height: 22,
     borderRadius: 11,
     marginRight: 8,
+    backgroundColor: '#E0E0E0',
   },
   instructorName: {
     fontSize: 14,
@@ -425,8 +397,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   studentAvatar: {
-    width: 40,
-    height: 40,
+    width: 32,
+    height: 32,
+    backgroundColor: '#E0E0E0',
     borderRadius: 20,
     marginRight: 12,
   },

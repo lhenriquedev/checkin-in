@@ -1,10 +1,13 @@
 import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetView,
   BottomSheetProps as GorhomBottomSheetProps,
 } from '@gorhom/bottom-sheet'
 import {
   forwardRef,
   ForwardRefRenderFunction,
+  useCallback,
   useImperativeHandle,
   useRef,
 } from 'react'
@@ -25,7 +28,6 @@ const BottomSheetComponent: ForwardRefRenderFunction<
   CustomBottomSheetProps
 > = ({ children, ...props }, ref) => {
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const defaultSnapPoints = ['50%', '75%']
 
   // Expose custom methods through the ref
   useImperativeHandle(ref, () => ({
@@ -37,14 +39,29 @@ const BottomSheetComponent: ForwardRefRenderFunction<
     },
   }))
 
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={0}
+        appearsOnIndex={1}
+        enableTouchThrough={true}
+      />
+    ),
+    [],
+  )
+
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      snapPoints={props.snapPoints || defaultSnapPoints}
-      index={-1}
+      snapPoints={props.snapPoints}
+      index={props.index}
       enablePanDownToClose={false}
+      enableDynamicSizing={false}
+      enableOverDrag={false}
       handleIndicatorStyle={styles.indicator}
       backgroundStyle={styles.backgroundStyle}
+      backdropComponent={renderBackdrop}
       android_keyboardInputMode="adjustResize"
       style={styles.bottomSheet}
       {...props}
@@ -61,14 +78,16 @@ export const CustomBottomSheet = forwardRef(BottomSheetComponent)
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
+    // alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   bottomSheet: {
-    zIndex: 1000,
-    elevation: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#CCCCCC',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
   indicator: {
     backgroundColor: '#CCCCCC',

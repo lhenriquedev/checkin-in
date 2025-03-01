@@ -1,4 +1,3 @@
-import { isClerkAPIResponseError, useSignIn } from '@clerk/clerk-expo'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useRouter } from 'expo-router'
 import React from 'react'
@@ -13,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import { toast } from 'sonner-native'
 import * as z from 'zod'
 
 import styles from './sign-in.styles'
@@ -36,7 +34,6 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>
 
 export default function Page() {
-  const { signIn, setActive, isLoaded } = useSignIn()
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState(false)
 
@@ -54,58 +51,58 @@ export default function Page() {
   })
 
   // Handle the submission of the sign-in form
-  const onSignInPress = async (data: LoginFormData) => {
-    if (!isLoaded) return
+  // const onSignInPress = async (data: LoginFormData) => {
+  //   if (!isLoaded) return
 
-    setIsLoading(true)
+  //   setIsLoading(true)
 
-    // Start the sign-in process using the email and password provided
-    try {
-      const signInAttempt = await signIn.create({
-        identifier: data.email,
-        password: data.password,
-      })
+  //   // Start the sign-in process using the email and password provided
+  //   try {
+  //     const signInAttempt = await signIn.create({
+  //       identifier: data.email,
+  //       password: data.password,
+  //     })
 
-      // If sign-in process is complete, set the created session as active
-      // and redirect the user
-      if (signInAttempt.status === 'complete') {
-        // toast.success('Login realizado com sucesso!')
-        await setActive({ session: signInAttempt.createdSessionId })
-        router.replace('/(auth)/home')
-      }
-    } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      if (isClerkAPIResponseError(err)) {
-        toast.error('Falha na autenticação. Verifique suas credenciais.')
-      }
-      // console.error(JSON.stringify(err, null, 2))
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  //     // If sign-in process is complete, set the created session as active
+  //     // and redirect the user
+  //     if (signInAttempt.status === 'complete') {
+  //       // toast.success('Login realizado com sucesso!')
+  //       await setActive({ session: signInAttempt.createdSessionId })
+  //       router.replace('/(auth)/home')
+  //     }
+  //   } catch (err) {
+  //     // See https://clerk.com/docs/custom-flows/error-handling
+  //     // for more info on error handling
+  //     if (isClerkAPIResponseError(err)) {
+  //       toast.error('Falha na autenticação. Verifique suas credenciais.')
+  //     }
+  //     // console.error(JSON.stringify(err, null, 2))
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
 
-  const onGoogleSignInPress = React.useCallback(async () => {
-    if (!isLoaded) return
+  // const onGoogleSignInPress = React.useCallback(async () => {
+  //   if (!isLoaded) return
 
-    try {
-      // Iniciar o processo de login com o Google usando Clerk
-      await signIn.create({
-        strategy: 'oauth_google',
-        redirectUrl:
-          Platform.OS === 'web' ? window.location.origin : 'your-app-scheme://',
-      })
+  //   try {
+  //     // Iniciar o processo de login com o Google usando Clerk
+  //     await signIn.create({
+  //       strategy: 'oauth_google',
+  //       redirectUrl:
+  //         Platform.OS === 'web' ? window.location.origin : 'your-app-scheme://',
+  //     })
 
-      // For a complete implementation, you would need to handle the redirect
-      // flow using Linking API on mobile platforms or window.location on web
-      console.log('Iniciando autenticação Google...')
+  //     // For a complete implementation, you would need to handle the redirect
+  //     // flow using Linking API on mobile platforms or window.location on web
+  //     console.log('Iniciando autenticação Google...')
 
-      // Note: The complete implementation would include handling the redirect
-      // and callback from Google OAuth, but that's outside the scope of this edit
-    } catch (err) {
-      console.error('Erro ao fazer login com Google:', err)
-    }
-  }, [isLoaded])
+  //     // Note: The complete implementation would include handling the redirect
+  //     // and callback from Google OAuth, but that's outside the scope of this edit
+  //   } catch (err) {
+  //     console.error('Erro ao fazer login com Google:', err)
+  //   }
+  // }, [isLoaded])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -166,7 +163,7 @@ export default function Page() {
 
             <TouchableOpacity
               style={[styles.button, isLoading && styles.buttonDisabled]}
-              onPress={handleSubmit(onSignInPress)}
+              onPress={handleSubmit(() => {})}
               disabled={isLoading}
             >
               <Text style={styles.buttonText}>
@@ -180,10 +177,7 @@ export default function Page() {
               <View style={styles.divider} />
             </View>
 
-            <TouchableOpacity
-              style={styles.googleButton}
-              onPress={onGoogleSignInPress}
-            >
+            <TouchableOpacity style={styles.googleButton} onPress={() => {}}>
               <Image source={GoogleLogo} style={styles.googleLogo} />
               <Text style={styles.googleButtonText}>Continuar com Google</Text>
             </TouchableOpacity>
