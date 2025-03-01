@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs'
 import { getHeaderTitle } from '@react-navigation/elements'
 import { useRouter } from 'expo-router'
@@ -10,7 +10,7 @@ const DynamicHeader = ({ options, route }: BottomTabHeaderProps) => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
 
-  if (title === 'Home') {
+  if (title === 'Aulas') {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.logoContainer}>
@@ -23,7 +23,7 @@ const DynamicHeader = ({ options, route }: BottomTabHeaderProps) => {
           <Text style={styles.title}>CT Kings</Text>
         </View>
 
-        <View style={styles.rightContainer}>
+        {/* <View style={styles.rightContainer}>
           <TouchableOpacity style={styles.iconButton}>
             <Feather name="bell" size={22} color="#333" />
             <View style={styles.notificationBadge}>
@@ -38,7 +38,7 @@ const DynamicHeader = ({ options, route }: BottomTabHeaderProps) => {
               style={styles.profileImage}
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     )
   }
@@ -46,27 +46,25 @@ const DynamicHeader = ({ options, route }: BottomTabHeaderProps) => {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Feather name="chevron-left" size={24} color="#333" />
+        <Ionicons name="arrow-back" size={32} color="#333" />
         <Text style={styles.title}>{title}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.profileButton}>
+      {/* <TouchableOpacity style={styles.profileButton}>
         <Image
           alt="profile"
           source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
           style={styles.profileImage}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
+    height: 80,
     backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
     height: 36,
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '700',
     color: '#333',
   },
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 8,
   },
 })
 

@@ -66,7 +66,7 @@ if (__DEV__) {
 
 const RootLayoutNav = () => {
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ flex: 1 }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
           <InitialLayout />

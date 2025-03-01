@@ -20,11 +20,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
+          title: 'Aulas',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
-              name={focused ? 'home' : 'home-outline'}
-              size={22}
+              name={focused ? 'calendar-clear' : 'calendar-clear-outline'}
+              size={30}
               color={color}
             />
           ),
@@ -34,11 +34,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Me',
+          title: 'Meu Perfil',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons
               name={focused ? 'person' : 'person-outline'}
-              size={22}
+              size={30}
               color={color}
             />
           ),
@@ -52,13 +52,14 @@ const styles = StyleSheet.create({
   tabBar: {
     borderTopWidth: 1,
     borderTopColor: '#e5e7eb',
-    height: 60,
+    height: 70,
     backgroundColor: '#fff',
     overflow: 'hidden',
   },
   tabBarLabel: {
     fontSize: 12,
     fontWeight: '500',
+    marginTop: 5,
     marginBottom: 5,
   },
 })
