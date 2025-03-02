@@ -97,7 +97,8 @@ const getBeltColorStyle = (color: UserData['beltColor']): string => {
   return colors[color] || colors.white
 }
 
-export default function ProfileScreen() {
+// Create the Profile component
+function Profile() {
   const [avatar, setAvatar] = useState(userData.avatar)
 
   const pickImage = async () => {
@@ -268,6 +269,9 @@ export default function ProfileScreen() {
     </SafeAreaView>
   )
 }
+
+// Export the component as default for Expo Router
+export default Profile
 
 const styles = StyleSheet.create({
   container: {
