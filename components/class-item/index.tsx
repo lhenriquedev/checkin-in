@@ -1,17 +1,19 @@
-import { View } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 
-import { ClassButtons } from './class-buttons'
 import { ClassHeader } from './class-header'
 import { ClassInfo } from './class-info'
 import { styles } from './styles/index'
 import { ClassItemProps } from './types'
 
-export function ClassItem({ item, onCheckin, onDetails }: ClassItemProps) {
+export function ClassItem({ item, onDetails }: ClassItemProps) {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => onDetails?.(item)}
+      activeOpacity={0.7}
+    >
       <ClassHeader item={item} />
       <ClassInfo item={item} />
-      <ClassButtons item={item} onCheckin={onCheckin} onDetails={onDetails} />
-    </View>
+    </TouchableOpacity>
   )
 }

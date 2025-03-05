@@ -4,6 +4,7 @@ import {
   MaterialCommunityIcons,
 } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
+import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import {
   Alert,
@@ -34,6 +35,12 @@ interface UserData {
   streak: number
   location: string
   avatar: string
+  plan: {
+    name: string
+    status: 'active' | 'inactive'
+    startDate: string
+    endDate: string
+  }
 }
 
 // Mock data for demonstration
@@ -45,6 +52,12 @@ const userData: UserData = {
   streak: 12,
   location: 'São Paulo',
   avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+  plan: {
+    name: 'Plano Premium',
+    status: 'active',
+    startDate: '01/01/2023',
+    endDate: '31/12/2023',
+  },
 }
 
 const classHistory: ClassHistoryItem[] = [
@@ -100,6 +113,7 @@ const getBeltColorStyle = (color: UserData['beltColor']): string => {
 // Create the Profile component
 function Profile() {
   const [avatar, setAvatar] = useState(userData.avatar)
+  const router = useRouter()
 
   const pickImage = async () => {
     try {
@@ -121,22 +135,6 @@ function Profile() {
     }
   }
 
-  const renderStripes = (level: number) => {
-    const stripes = []
-    for (let i = 0; i < 4; i++) {
-      stripes.push(
-        <View
-          key={i}
-          style={[
-            styles.stripe,
-            { backgroundColor: i < level ? '#FFFFFF' : 'transparent' },
-          ]}
-        />,
-      )
-    }
-    return <View style={styles.stripesContainer}>{stripes}</View>
-  }
-
   const renderClassHistoryItem = ({ item }: { item: ClassHistoryItem }) => (
     <View style={styles.historyItem}>
       <View style={styles.historyItemLeft}>
@@ -154,7 +152,10 @@ function Profile() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Header Section */}
         <View style={styles.header}>
           <View style={styles.profileSection}>
@@ -174,7 +175,6 @@ function Profile() {
                     { backgroundColor: getBeltColorStyle(userData.beltColor) },
                   ]}
                 />
-                {renderStripes(userData.beltLevel)}
               </View>
               <View style={styles.locationContainer}>
                 <Ionicons name="location-outline" size={14} color="#666" />
@@ -182,7 +182,10 @@ function Profile() {
               </View>
             </View>
 
-            <TouchableOpacity style={styles.editButton}>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => router.push('/(auth)/edit-profile' as any)}
+            >
               <Ionicons name="settings-outline" size={20} color="#666" />
             </TouchableOpacity>
           </View>
@@ -190,31 +193,73 @@ function Profile() {
           {/* Stats Section */}
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
-              <View style={[styles.statIcon, { backgroundColor: '#E3F2FD' }]}>
-                <MaterialCommunityIcons
-                  name="karate"
-                  size={20}
-                  color="#1E88E5"
-                />
+              <View style={[styles.statIcon, { backgroundColor: '#f0f0f0' }]}>
+                <MaterialCommunityIcons name="karate" size={20} color="#333" />
               </View>
               <Text style={styles.statValue}>{userData.totalClasses}</Text>
               <Text style={styles.statLabel}>Aulas</Text>
             </View>
 
             <View style={styles.statItem}>
-              <View style={[styles.statIcon, { backgroundColor: '#E8F5E9' }]}>
-                <FontAwesome5 name="fire" size={18} color="#43A047" />
+              <View style={[styles.statIcon, { backgroundColor: '#f0f0f0' }]}>
+                <FontAwesome5 name="fire" size={18} color="#333" />
               </View>
               <Text style={styles.statValue}>{userData.streak}</Text>
               <Text style={styles.statLabel}>Sequência</Text>
             </View>
 
             <View style={styles.statItem}>
-              <View style={[styles.statIcon, { backgroundColor: '#FFF3E0' }]}>
-                <Ionicons name="trophy-outline" size={20} color="#FF9800" />
+              <View style={[styles.statIcon, { backgroundColor: '#f0f0f0' }]}>
+                <Ionicons name="trophy-outline" size={20} color="#333" />
               </View>
               <Text style={styles.statValue}>3</Text>
               <Text style={styles.statLabel}>Torneios</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Subscription Plan Section */}
+        <View style={styles.menuSection}>
+          <Text style={styles.sectionTitle}>Plano de Assinatura</Text>
+          <View style={styles.planContainer}>
+            <View style={styles.planHeader}>
+              <Text style={styles.planName}>{userData.plan.name}</Text>
+              <View
+                style={[
+                  styles.planStatusBadge,
+                  {
+                    backgroundColor:
+                      userData.plan.status === 'active' ? '#f0f0f0' : '#e0e0e0',
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.planStatusText,
+                    {
+                      color:
+                        userData.plan.status === 'active' ? '#333' : '#888',
+                    },
+                  ]}
+                >
+                  {userData.plan.status === 'active' ? 'Ativo' : 'Inativo'}
+                </Text>
+              </View>
+            </View>
+
+            <View style={styles.planDetails}>
+              <View style={styles.planDetailItem}>
+                <Text style={styles.planDetailLabel}>Início:</Text>
+                <Text style={styles.planDetailValue}>
+                  {userData.plan.startDate}
+                </Text>
+              </View>
+              <View style={styles.planDetailItem}>
+                <Text style={styles.planDetailLabel}>Término:</Text>
+                <Text style={styles.planDetailValue}>
+                  {userData.plan.endDate}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
@@ -223,16 +268,24 @@ function Profile() {
         <View style={styles.menuSection}>
           <Text style={styles.sectionTitle}>Histórico de Aulas</Text>
           <FlatList
-            data={classHistory}
+            data={classHistory.slice(0, 3)} // Show only first 3 classes
             renderItem={renderClassHistoryItem}
             keyExtractor={(item) => item.id}
             scrollEnabled={false}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
+            ListEmptyComponent={
+              <Text style={styles.emptyListText}>
+                Nenhuma aula registrada ainda.
+              </Text>
+            }
           />
 
-          <TouchableOpacity style={styles.seeAllButton}>
+          <TouchableOpacity
+            style={styles.seeAllButton}
+            onPress={() => router.push('/(auth)/class-history' as any)}
+          >
             <Text style={styles.seeAllText}>Ver todo o histórico</Text>
-            <Ionicons name="chevron-forward" size={16} color="#1E88E5" />
+            <Ionicons name="chevron-forward" size={16} color="#333" />
           </TouchableOpacity>
         </View>
 
@@ -240,28 +293,19 @@ function Profile() {
         <View style={styles.menuSection}>
           <Text style={styles.sectionTitle}>Configurações</Text>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIcon, { backgroundColor: '#E3F2FD' }]}>
-              <Ionicons name="person-outline" size={20} color="#1E88E5" />
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => router.push('/(auth)/edit-profile' as any)}
+          >
+            <View style={[styles.menuIcon, { backgroundColor: '#f0f0f0' }]}>
+              <Ionicons name="person-outline" size={20} color="#333" />
             </View>
             <Text style={styles.menuTitle}>Editar Perfil</Text>
             <Ionicons name="chevron-forward" size={20} color="#DDD" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
-            <View style={[styles.menuIcon, { backgroundColor: '#FFF3E0' }]}>
-              <Ionicons
-                name="notifications-outline"
-                size={20}
-                color="#FF9800"
-              />
-            </View>
-            <Text style={styles.menuTitle}>Notificações</Text>
-            <Ionicons name="chevron-forward" size={20} color="#DDD" />
-          </TouchableOpacity>
-
           <TouchableOpacity style={styles.logoutButton}>
-            <Ionicons name="log-out-outline" size={20} color="#f44336" />
+            <Ionicons name="log-out-outline" size={20} color="#333" />
             <Text style={styles.logoutText}>Sair da conta</Text>
           </TouchableOpacity>
         </View>
@@ -276,24 +320,25 @@ export default Profile
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f7fa',
+    backgroundColor: '#fff',
+  },
+  content: {
+    paddingTop: 0,
+    paddingHorizontal: 16,
   },
   header: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 2,
+    backgroundColor: '#ffffff',
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
+    marginBottom: 10,
   },
   profileSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 15,
   },
+
   profileImage: {
     width: 70,
     height: 70,
@@ -304,7 +349,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     right: 15,
-    backgroundColor: '#1E88E5',
+    backgroundColor: '#333',
     width: 24,
     height: 24,
     borderRadius: 12,
@@ -354,7 +399,7 @@ const styles = StyleSheet.create({
   editButton: {
     width: 36,
     height: 36,
-    borderRadius: 18,
+    borderRadius: 4,
     backgroundColor: '#f0f0f0',
     alignItems: 'center',
     justifyContent: 'center',
@@ -371,7 +416,7 @@ const styles = StyleSheet.create({
   statIcon: {
     width: 40,
     height: 40,
-    borderRadius: 20,
+    borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
@@ -387,14 +432,11 @@ const styles = StyleSheet.create({
   },
   menuSection: {
     backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 20,
-    margin: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 3,
-    elevation: 2,
+    borderRadius: 4,
+    padding: 15,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
   },
   sectionTitle: {
     fontSize: 18,
@@ -427,7 +469,7 @@ const styles = StyleSheet.create({
   },
   historyDuration: {
     fontSize: 14,
-    color: '#1E88E5',
+    color: '#333',
     fontWeight: '500',
   },
   separator: {
@@ -442,7 +484,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   seeAllText: {
-    color: '#1E88E5',
+    color: '#333',
     fontWeight: '600',
     marginRight: 4,
   },
@@ -456,7 +498,7 @@ const styles = StyleSheet.create({
   menuIcon: {
     width: 40,
     height: 40,
-    borderRadius: 12,
+    borderRadius: 4,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 15,
@@ -471,12 +513,61 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
     paddingVertical: 12,
-    borderRadius: 10,
-    backgroundColor: '#fff0f0',
+    borderRadius: 4,
+    backgroundColor: '#f0f0f0',
   },
   logoutText: {
-    color: '#f44336',
+    color: '#333',
     fontWeight: '600',
     marginLeft: 8,
+  },
+  planContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 4,
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#f0f0f0',
+  },
+  planHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  planName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  planStatusBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  planStatusText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  planDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  planDetailItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  planDetailLabel: {
+    fontSize: 14,
+    color: '#666',
+    marginRight: 5,
+  },
+  planDetailValue: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  emptyListText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'center',
+    marginTop: 10,
   },
 })

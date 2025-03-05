@@ -2,6 +2,7 @@ import 'expo-dev-client'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router'
+import { StatusBar } from 'expo-status-bar'
 import { useEffect, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -51,7 +52,7 @@ const InitialLayout = () => {
     console.log('User changed: ', isSignedIn)
 
     if (isSignedIn && !inTabsGroup) {
-      router.replace('/(auth)/home')
+      router.replace('/(auth)/(tabs)/home')
     } else if (!isSignedIn) {
       router.replace('/(public)/sign-in')
     }
@@ -71,6 +72,7 @@ const RootLayoutNav = () => {
         <QueryClientProvider client={queryClient}>
           <InitialLayout />
         </QueryClientProvider>
+        <StatusBar style="light" />
       </GestureHandlerRootView>
     </SafeAreaProvider>
   )

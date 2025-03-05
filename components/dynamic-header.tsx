@@ -1,44 +1,26 @@
 import { Ionicons } from '@expo/vector-icons'
-import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs'
-import { getHeaderTitle } from '@react-navigation/elements'
 import { useRouter } from 'expo-router'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-const DynamicHeader = ({ options, route }: BottomTabHeaderProps) => {
-  const title = getHeaderTitle(options, route.name)
+const DynamicHeader = ({ options }: any) => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
 
-  if (title === 'Aulas') {
+  console.log('title', options.title)
+
+  if (options.title === 'Início') {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <View style={styles.logoContainer}>
           <Image
             alt="logo"
-            source={require('../assets/images/logo.png')}
+            source={require('../assets/images/logo-dark.jpg')}
             style={styles.logo}
             resizeMode="contain"
           />
           <Text style={styles.title}>CT Kings</Text>
         </View>
-
-        {/* <View style={styles.rightContainer}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Feather name="bell" size={22} color="#333" />
-            <View style={styles.notificationBadge}>
-              <Text style={styles.badgeText}>2</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.profileButton}>
-            <Image
-              alt="profile"
-              source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
-              style={styles.profileImage}
-            />
-          </TouchableOpacity>
-        </View> */}
       </View>
     )
   }
@@ -46,29 +28,23 @@ const DynamicHeader = ({ options, route }: BottomTabHeaderProps) => {
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={32} color="#333" />
-        <Text style={styles.title}>{title}</Text>
+        <Ionicons name="arrow-back" size={24} color="#fff" />
+        <Text style={styles.title}>{options.title}</Text>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity style={styles.profileButton}>
-        <Image
-          alt="profile"
-          source={{ uri: 'https://randomuser.me/api/portraits/men/32.jpg' }}
-          style={styles.profileImage}
-        />
-      </TouchableOpacity> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 80,
-    backgroundColor: 'white',
+    height: 110,
+    backgroundColor: '#000000',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
+    // borderBottomWidth: 1,
+    // borderBottomColor: '#e5e7eb',
   },
 
   logoContainer: {
@@ -81,9 +57,9 @@ const styles = StyleSheet.create({
     height: 36,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '700',
-    color: '#333',
+    color: '#fff',
   },
   rightContainer: {
     flexDirection: 'row',

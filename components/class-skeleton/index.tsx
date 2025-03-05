@@ -7,13 +7,8 @@ export function ClassSkeleton() {
     <View style={styles.container}>
       {/* Class Header Skeleton */}
       <View style={styles.header}>
-        <View style={styles.imageContainer}>
-          <View style={styles.classImageSkeleton} />
-        </View>
-        <View style={styles.titleContainer}>
-          <View style={styles.titleSkeleton} />
-          <View style={styles.instructorSkeleton} />
-        </View>
+        <View style={styles.titleSkeleton} />
+        <View style={styles.instructorSkeleton} />
       </View>
 
       {/* Class Info Skeleton */}
@@ -27,12 +22,6 @@ export function ClassSkeleton() {
           <View style={styles.infoLabelSkeleton} />
           <View style={styles.studentCountSkeleton} />
         </View>
-      </View>
-
-      {/* Button Container Skeleton */}
-      <View style={styles.buttonContainer}>
-        <View style={styles.detailsButtonSkeleton} />
-        <View style={styles.checkinButtonSkeleton} />
       </View>
     </View>
   )
