@@ -44,7 +44,6 @@
         {
           "image": "./assets/images/splash.png",
           "resizeMode": "contain",
-          "imageWidth": 200,
           "backgroundColor": "#ffffff"
         }
       ]
