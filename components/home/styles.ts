@@ -41,7 +41,6 @@ export const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 16,
     marginLeft: 16,
-    marginRight: 16,
     borderWidth: 1,
     borderColor: '#e5e7eb',
   },

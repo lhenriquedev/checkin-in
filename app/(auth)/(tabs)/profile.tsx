@@ -18,6 +18,8 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+import { useAuth } from '@/contexts/AuthContext'
+
 // Define types
 interface ClassHistoryItem {
   id: string
@@ -114,6 +116,7 @@ const getBeltColorStyle = (color: UserData['beltColor']): string => {
 function Profile() {
   const [avatar, setAvatar] = useState(userData.avatar)
   const router = useRouter()
+  const { signOut, isLoading } = useAuth()
 
   const pickImage = async () => {
     try {
@@ -132,6 +135,16 @@ function Profile() {
     } catch (error) {
       Alert.alert('Erro', 'Não foi possível alterar a foto de perfil')
       console.error(error)
+    }
+  }
+
+  const handleLogout = async () => {
+    try {
+      await signOut()
+      // O redirecionamento será tratado pelo AuthContext
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error)
+      Alert.alert('Erro', 'Não foi possível fazer logout')
     }
   }
 
@@ -304,9 +317,15 @@ function Profile() {
             <Ionicons name="chevron-forward" size={20} color="#DDD" />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.logoutButton}>
-            <Ionicons name="log-out-outline" size={20} color="#333" />
-            <Text style={styles.logoutText}>Sair da conta</Text>
+          <TouchableOpacity
+            style={styles.logoutButton}
+            onPress={handleLogout}
+            disabled={isLoading}
+          >
+            <Ionicons name="log-out-outline" size={20} color="white" />
+            <Text style={styles.logoutButtonText}>
+              {isLoading ? 'Saindo...' : 'Sair da conta'}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -508,17 +527,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   logoutButton: {
+    backgroundColor: '#e74c3c',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
     paddingVertical: 12,
-    borderRadius: 4,
-    backgroundColor: '#f0f0f0',
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginTop: 20,
+    marginBottom: 30,
   },
-  logoutText: {
-    color: '#333',
-    fontWeight: '600',
+  logoutButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
     marginLeft: 8,
   },
   planContainer: {

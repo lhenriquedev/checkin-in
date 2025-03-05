@@ -18,6 +18,7 @@ import styles from './sign-in.styles'
 
 import GoogleLogo from '@/assets/images/google-logo.png'
 import Logo from '@/assets/images/logo.png'
+import { useAuth } from '@/contexts/AuthContext'
 
 // Definir o esquema de validação com Zod
 const loginSchema = z.object({
@@ -35,7 +36,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 
 export default function Page() {
   const router = useRouter()
-  const [isLoading, setIsLoading] = React.useState(false)
+  const { signIn, googleSignIn, isLoading } = useAuth()
 
   // Configurar React Hook Form com validação Zod
   const {
@@ -51,58 +52,37 @@ export default function Page() {
   })
 
   // Handle the submission of the sign-in form
-  // const onSignInPress = async (data: LoginFormData) => {
-  //   if (!isLoaded) return
+  const onSignInPress = async (data: LoginFormData) => {
+    try {
+      const success = await signIn(data.email, data.password)
 
-  //   setIsLoading(true)
+      if (success) {
+        // Login bem-sucedido, o redirecionamento será tratado pelo AuthContext
+        console.log('Login realizado com sucesso!')
+      } else {
+        // Tratar falha de login
+        console.error('Falha na autenticação. Verifique suas credenciais.')
+      }
+    } catch (err) {
+      console.error('Erro ao fazer login:', err)
+    }
+  }
 
-  //   // Start the sign-in process using the email and password provided
-  //   try {
-  //     const signInAttempt = await signIn.create({
-  //       identifier: data.email,
-  //       password: data.password,
-  //     })
+  const onGoogleSignInPress = async () => {
+    try {
+      const success = await googleSignIn()
 
-  //     // If sign-in process is complete, set the created session as active
-  //     // and redirect the user
-  //     if (signInAttempt.status === 'complete') {
-  //       // toast.success('Login realizado com sucesso!')
-  //       await setActive({ session: signInAttempt.createdSessionId })
-  //       router.replace('/(auth)/home')
-  //     }
-  //   } catch (err) {
-  //     // See https://clerk.com/docs/custom-flows/error-handling
-  //     // for more info on error handling
-  //     if (isClerkAPIResponseError(err)) {
-  //       toast.error('Falha na autenticação. Verifique suas credenciais.')
-  //     }
-  //     // console.error(JSON.stringify(err, null, 2))
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
-  // const onGoogleSignInPress = React.useCallback(async () => {
-  //   if (!isLoaded) return
-
-  //   try {
-  //     // Iniciar o processo de login com o Google usando Clerk
-  //     await signIn.create({
-  //       strategy: 'oauth_google',
-  //       redirectUrl:
-  //         Platform.OS === 'web' ? window.location.origin : 'your-app-scheme://',
-  //     })
-
-  //     // For a complete implementation, you would need to handle the redirect
-  //     // flow using Linking API on mobile platforms or window.location on web
-  //     console.log('Iniciando autenticação Google...')
-
-  //     // Note: The complete implementation would include handling the redirect
-  //     // and callback from Google OAuth, but that's outside the scope of this edit
-  //   } catch (err) {
-  //     console.error('Erro ao fazer login com Google:', err)
-  //   }
-  // }, [isLoaded])
+      if (success) {
+        // Login com Google bem-sucedido, o redirecionamento será tratado pelo AuthContext
+        console.log('Login com Google realizado com sucesso!')
+      } else {
+        // Tratar falha de login com Google
+        console.error('Falha na autenticação com Google.')
+      }
+    } catch (err) {
+      console.error('Erro ao fazer login com Google:', err)
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -163,7 +143,7 @@ export default function Page() {
 
             <TouchableOpacity
               style={[styles.button, isLoading && styles.buttonDisabled]}
-              onPress={handleSubmit(() => {})}
+              onPress={handleSubmit(onSignInPress)}
               disabled={isLoading}
             >
               <Text style={styles.buttonText}>
@@ -177,7 +157,11 @@ export default function Page() {
               <View style={styles.divider} />
             </View>
 
-            <TouchableOpacity style={styles.googleButton} onPress={() => {}}>
+            <TouchableOpacity
+              style={styles.googleButton}
+              onPress={onGoogleSignInPress}
+              disabled={isLoading}
+            >
               <Image source={GoogleLogo} style={styles.googleLogo} />
               <Text style={styles.googleButtonText}>Continuar com Google</Text>
             </TouchableOpacity>

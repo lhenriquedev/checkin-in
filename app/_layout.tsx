@@ -7,13 +7,14 @@ import { useEffect, useState } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
+import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { queryClient } from '@/lib/query-client'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
 const InitialLayout = () => {
-  const isSignedIn = true
+  const { isSignedIn } = useAuth()
   const [appIsReady, setAppIsReady] = useState(false)
 
   const segments = useSegments()
@@ -45,18 +46,16 @@ const InitialLayout = () => {
   }, [appIsReady])
 
   useEffect(() => {
-    if (!isSignedIn) return
+    if (!appIsReady) return
 
     const inTabsGroup = segments[0] === '(auth)'
-
-    console.log('User changed: ', isSignedIn)
 
     if (isSignedIn && !inTabsGroup) {
       router.replace('/(auth)/(tabs)/home')
     } else if (!isSignedIn) {
       router.replace('/(public)/sign-in')
     }
-  }, [isSignedIn])
+  }, [isSignedIn, appIsReady, segments])
 
   return <Slot />
 }
@@ -70,7 +69,9 @@ const RootLayoutNav = () => {
     <SafeAreaProvider style={{ flex: 1 }}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <QueryClientProvider client={queryClient}>
-          <InitialLayout />
+          <AuthProvider>
+            <InitialLayout />
+          </AuthProvider>
         </QueryClientProvider>
         <StatusBar style="light" />
       </GestureHandlerRootView>
