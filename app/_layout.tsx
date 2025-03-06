@@ -1,9 +1,16 @@
 import 'expo-dev-client'
 
+import {
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+} from '@expo-google-fonts/inter'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { useFonts } from 'expo-font'
 import { Slot, SplashScreen, useRouter, useSegments } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
@@ -15,7 +22,12 @@ SplashScreen.preventAutoHideAsync()
 
 const InitialLayout = () => {
   const { isSignedIn, isLoading } = useAuth()
-  const [appIsReady, setAppIsReady] = useState(false)
+  const [fontsLoaded] = useFonts({
+    'Inter-Regular': Inter_400Regular,
+    'Inter-Bold': Inter_700Bold,
+    'Inter-Medium': Inter_500Medium,
+    'Inter-SemiBold': Inter_600SemiBold,
+  })
 
   const segments = useSegments()
   const router = useRouter()
@@ -30,8 +42,6 @@ const InitialLayout = () => {
         await new Promise((resolve) => setTimeout(resolve, 500)) // Small delay to ensure smooth transition
       } catch (e) {
         console.warn(e)
-      } finally {
-        setAppIsReady(true)
       }
     }
 
@@ -39,7 +49,7 @@ const InitialLayout = () => {
   }, [])
 
   useEffect(() => {
-    if (!appIsReady) return
+    if (!fontsLoaded) return
 
     const inAuthGroup = segments[0] === '(auth)'
     const inPublicGroup = segments[0] === '(public)'
@@ -52,19 +62,19 @@ const InitialLayout = () => {
       // Se não estiver autenticado e não estiver na área pública
       router.replace('/(public)/sign-in')
     }
-  }, [isSignedIn, appIsReady, segments])
+  }, [isSignedIn, fontsLoaded, segments])
 
   useEffect(() => {
-    if (appIsReady && !isLoading) {
+    if (fontsLoaded && !isLoading) {
       // Esconde a tela de splash quando o app estiver pronto e
       // não estiver ocorrendo nenhuma operação de autenticação
       SplashScreen.hideAsync()
     }
-  }, [appIsReady, isLoading])
+  }, [fontsLoaded, isLoading])
 
   // Se o app ainda não estiver pronto ou estiver ocorrendo uma operação de autenticação,
   // retorna null para manter a tela de splash visível
-  if (!appIsReady || isLoading) {
+  if (!fontsLoaded || isLoading) {
     return null
   }
 

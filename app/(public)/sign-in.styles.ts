@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
+    fontFamily: 'Inter-Bold',
     fontWeight: 'bold',
     color: 'black',
     marginBottom: 8,
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: '#6B7280',
     textAlign: 'center',
+    fontFamily: 'Inter-Medium',
   },
   formContainer: {
     flexDirection: 'column',
@@ -45,12 +47,14 @@ const styles = StyleSheet.create({
   },
   input: {
     color: 'black',
+    fontFamily: 'Inter-Medium',
   },
   errorText: {
     color: '#EF4444',
     fontSize: 12,
     marginLeft: 4,
     marginTop: -12,
+    fontFamily: 'Inter-Medium',
   },
   button: {
     borderRadius: 8,
@@ -64,6 +68,8 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '600',
     textAlign: 'center',
+    fontFamily: 'Inter-Medium',
+    fontSize: 16,
   },
   dividerContainer: {
     flexDirection: 'row',
@@ -78,6 +84,7 @@ const styles = StyleSheet.create({
   dividerText: {
     marginHorizontal: 16,
     color: '#6B7280',
+    fontFamily: 'Inter-Medium',
   },
   googleButton: {
     flexDirection: 'row',
@@ -97,6 +104,7 @@ const styles = StyleSheet.create({
   googleButtonText: {
     color: 'black',
     fontWeight: '600',
+    fontFamily: 'Inter-Medium',
   },
   signupContainer: {
     flexDirection: 'row',
@@ -105,10 +113,12 @@ const styles = StyleSheet.create({
   },
   signupText: {
     color: '#6B7280',
+    fontFamily: 'Inter-Medium',
   },
   signupLink: {
     color: 'black',
     fontWeight: '600',
+    fontFamily: 'Inter-Medium',
   },
 })
 
