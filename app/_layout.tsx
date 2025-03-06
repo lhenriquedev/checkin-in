@@ -14,7 +14,7 @@ import { queryClient } from '@/lib/query-client'
 SplashScreen.preventAutoHideAsync()
 
 const InitialLayout = () => {
-  const { isSignedIn } = useAuth()
+  const { isSignedIn, isLoading } = useAuth()
   const [appIsReady, setAppIsReady] = useState(false)
 
   const segments = useSegments()
@@ -39,23 +39,34 @@ const InitialLayout = () => {
   }, [])
 
   useEffect(() => {
-    if (appIsReady) {
-      // Hide the splash screen once the app is ready
-      SplashScreen.hideAsync()
-    }
-  }, [appIsReady])
-
-  useEffect(() => {
     if (!appIsReady) return
 
-    const inTabsGroup = segments[0] === '(auth)'
+    const inAuthGroup = segments[0] === '(auth)'
+    const inPublicGroup = segments[0] === '(public)'
 
-    if (isSignedIn && !inTabsGroup) {
+    // Navegação baseada no estado de autenticação
+    if (isSignedIn && !inAuthGroup) {
+      // Se estiver autenticado, mas não estiver na área autenticada
       router.replace('/(auth)/(tabs)/home')
-    } else if (!isSignedIn) {
+    } else if (!isSignedIn && !inPublicGroup) {
+      // Se não estiver autenticado e não estiver na área pública
       router.replace('/(public)/sign-in')
     }
   }, [isSignedIn, appIsReady, segments])
+
+  useEffect(() => {
+    if (appIsReady && !isLoading) {
+      // Esconde a tela de splash quando o app estiver pronto e
+      // não estiver ocorrendo nenhuma operação de autenticação
+      SplashScreen.hideAsync()
+    }
+  }, [appIsReady, isLoading])
+
+  // Se o app ainda não estiver pronto ou estiver ocorrendo uma operação de autenticação,
+  // retorna null para manter a tela de splash visível
+  if (!appIsReady || isLoading) {
+    return null
+  }
 
   return <Slot />
 }

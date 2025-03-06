@@ -1,11 +1,4 @@
-import { useRouter, useSegments } from 'expo-router'
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import React, { createContext, ReactNode, useContext, useState } from 'react'
 
 // Definindo o tipo de usuário
 interface User {
@@ -38,22 +31,6 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const segments = useSegments()
-
-  // Redirecionar o usuário com base no estado de autenticação
-  useEffect(() => {
-    const inAuthGroup = segments[0] === '(auth)'
-    const inPublicGroup = segments[0] === '(public)'
-
-    if (user && !inAuthGroup) {
-      // Se o usuário está autenticado mas não está na área autenticada
-      router.replace('/(auth)/(tabs)/home')
-    } else if (!user && !inPublicGroup) {
-      // Se o usuário não está autenticado e não está na área pública
-      router.replace('/(public)/sign-in')
-    }
-  }, [user, segments])
 
   // Função para fazer login
   const signIn = async (email: string, password: string): Promise<boolean> => {
