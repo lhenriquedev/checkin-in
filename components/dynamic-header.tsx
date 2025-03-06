@@ -7,8 +7,6 @@ const DynamicHeader = ({ options }: any) => {
   const router = useRouter()
   const insets = useSafeAreaInsets()
 
-  console.log('title', options.title)
-
   if (options.title === 'Início') {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>

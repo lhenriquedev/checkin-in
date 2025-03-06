@@ -1,8 +1,4 @@
-import {
-  FontAwesome5,
-  Ionicons,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons'
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
 import { useRouter } from 'expo-router'
 import React, { useState } from 'react'
@@ -189,10 +185,6 @@ function Profile() {
                   ]}
                 />
               </View>
-              <View style={styles.locationContainer}>
-                <Ionicons name="location-outline" size={14} color="#666" />
-                <Text style={styles.location}>{userData.location}</Text>
-              </View>
             </View>
 
             <TouchableOpacity
@@ -211,22 +203,6 @@ function Profile() {
               </View>
               <Text style={styles.statValue}>{userData.totalClasses}</Text>
               <Text style={styles.statLabel}>Aulas</Text>
-            </View>
-
-            <View style={styles.statItem}>
-              <View style={[styles.statIcon, { backgroundColor: '#f0f0f0' }]}>
-                <FontAwesome5 name="fire" size={18} color="#333" />
-              </View>
-              <Text style={styles.statValue}>{userData.streak}</Text>
-              <Text style={styles.statLabel}>Sequência</Text>
-            </View>
-
-            <View style={styles.statItem}>
-              <View style={[styles.statIcon, { backgroundColor: '#f0f0f0' }]}>
-                <Ionicons name="trophy-outline" size={20} color="#333" />
-              </View>
-              <Text style={styles.statValue}>3</Text>
-              <Text style={styles.statLabel}>Torneios</Text>
             </View>
           </View>
         </View>
@@ -305,17 +281,6 @@ function Profile() {
         {/* Settings Menu */}
         <View style={styles.menuSection}>
           <Text style={styles.sectionTitle}>Configurações</Text>
-
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => router.push('/(auth)/edit-profile' as any)}
-          >
-            <View style={[styles.menuIcon, { backgroundColor: '#f0f0f0' }]}>
-              <Ionicons name="person-outline" size={20} color="#333" />
-            </View>
-            <Text style={styles.menuTitle}>Editar Perfil</Text>
-            <Ionicons name="chevron-forward" size={20} color="#DDD" />
-          </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.logoutButton}
