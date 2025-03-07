@@ -46,7 +46,7 @@ export default function ClassesScreen() {
           if (foundClass) {
             // No longer using BottomSheet, navigate to class-details
             router.push({
-              pathname: '/(auth)/class-details',
+              pathname: '/(auth)/(tabs)/class-details',
               params: {
                 classId: foundClass.id,
                 classDate: selectedDate.toISOString(),
@@ -82,7 +82,7 @@ export default function ClassesScreen() {
   const handleDetails = (classItem: Class) => {
     // Instead of using the bottom sheet, navigate to the class-details screen
     router.push({
-      pathname: '/(auth)/class-details',
+      pathname: '/(auth)/(tabs)/class-details',
       params: {
         classId: classItem.id,
         classDate: selectedDate.toISOString(),

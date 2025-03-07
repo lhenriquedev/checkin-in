@@ -71,7 +71,7 @@ const classCategories: ClassCategory[] = [
     description:
       'Arte marcial tailandesa com técnicas de golpes com punhos, cotovelos, joelhos e canelas.',
     imageUrl:
-      'https://images.unsplash.com/photo-1555597673-b21d5c935865?q=80&w=2342&auto=format&fit=crop',
+      'https://portal.comunique-se.com.br/wp-content/uploads/2024/10/9b4b333e-1dd6-45de-9488-565a4b5dbbc1.jpeg',
   },
   {
     id: 'jiu-jitsu',
@@ -79,7 +79,7 @@ const classCategories: ClassCategory[] = [
     description:
       'Arte marcial japonesa e esporte de combate que se concentra em técnicas de imobilização e submissão.',
     imageUrl:
-      'https://images.unsplash.com/photo-1594737625785-a6cbdabd333c?q=80&w=2340&auto=format&fit=crop',
+      'https://upload.wikimedia.org/wikipedia/commons/2/22/GABRIEL_VELLA_vs_ROMINHO_51.jpg',
   },
 ]
 
@@ -179,8 +179,13 @@ export default function HomeScreen() {
 
   const renderCategoryCard = ({ item }: { item: ClassCategory }) => (
     <TouchableOpacity style={styles.categoryCard} onPress={goToClassList}>
-      <Image source={{ uri: item.imageUrl }} style={styles.categoryImage} />
-      <View style={styles.categoryContent}>
+      <Image
+        alt=""
+        source={{ uri: item.imageUrl }}
+        style={styles.categoryImage}
+      />
+      <View style={styles.categoryOverlay}>
+        <View style={styles.categoryGradient} />
         <Text style={styles.categoryName}>{item.name}</Text>
       </View>
     </TouchableOpacity>
